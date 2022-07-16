@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".EditProfileActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        style="@style/styleBar"
+        android:layout_width="match_parent"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        android:elevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/roboto_medium"
+            android:letterSpacing="0.12"
+            android:textSize="20sp"
+            android:textColor="@color/main_text_color"
+            android:text="@string/settings_title" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/common_desc"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:onClick="saveAndGoBack"
+            android:src="@drawable/ic_cancelwhite" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <EditText
+            android:id="@+id/personName"
+            android:layout_width="match_parent"
+            style="@style/regularEdittext"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="@string/profile_name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/phoneNumber"
+            style="@style/regularEdittext"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/text_color_hint"
+            android:cursorVisible="false"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="@string/profile_phone"
+            android:inputType="phone"
+            android:longClickable="false"
+            android:textColor="@color/text_color_hint" />
+
+        <EditText
+            android:id="@+id/emailAddress"
+            android:layout_width="match_parent"
+            style="@style/regularEdittext"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="@string/profile_email"
+            android:inputType="textEmailAddress" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/roboto"
+        android:onClick="exit"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="@string/text_exit"
+        android:textAllCaps="false"
+        android:textColor="@color/error_color"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

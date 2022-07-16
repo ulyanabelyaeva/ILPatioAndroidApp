@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="regularButton" parent="Theme.AppCompat.Light">
+        <item name="android:background">@drawable/ripple_effect_regular_btn</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">270dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+    <style name="regularEdittext" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColorHint">@color/text_color_hint</item>
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="backgroundTint">@color/black</item>
+    </style>
+    <style name="styleBar" parent="Theme.AppCompat.Light">
+        <item name="android:layout_height">60dp</item>
+        <item name="android:background">@color/main_color</item>
+    </style>
+    <style name="style_card" parent="Theme.AppCompat.Light">
+        <item name="android:background">@drawable/style_card</item>
+    </style>
+</resources>

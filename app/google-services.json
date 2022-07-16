@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "202637126418",
+    "project_id": "il-patio",
+    "storage_bucket": "il-patio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202637126418:android:702064439d8dc74e47a1cb",
+        "android_client_info": {
+          "package_name": "com.example.ilpatio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202637126418-o3k72iiagqscgho42r25bl7lqmhmrsf7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ilpatio",
+            "certificate_hash": "1f27af50e021c136307664401904df53797b9c44"
+          }
+        },
+        {
+          "client_id": "202637126418-guottt42hiiat0jm4rphk00rgplg3ss7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-BlYh24rm6giCsrW_MOKGlfAOyQZ11DI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202637126418-guottt42hiiat0jm4rphk00rgplg3ss7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
