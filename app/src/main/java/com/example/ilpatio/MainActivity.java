@@ -175,20 +175,28 @@ public class MainActivity extends AppCompatActivity {
 
         setCategoryList(categoryList);
 
+        Log.d("TEST_FOOD", String.valueOf(hotFood.size()));
+
         for (int i = 0; i < fullFoodList.size(); i++) {
             switch (fullFoodList.get(i).getCategory()){
                 case 1:
                     hotFood.add(fullFoodList.get(i));
+                    break;
                 case 2:
                     pasta.add(fullFoodList.get(i));
+                    break;
                 case 3:
                     pizza.add(fullFoodList.get(i));
+                    break;
                 case 4:
                     salad.add(fullFoodList.get(i));
+                    break;
                 case 5:
                     drink.add(fullFoodList.get(i));
+                    break;
                 case 6:
                     soup.add(fullFoodList.get(i));
+                    break;
             }
         }
 
