@@ -6,9 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,12 +33,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Adapters.CategoryAdapter;
-import Adapters.FoodAdapter;
-import Models.Category;
-import Models.Food;
-import Models.Order;
-import Models.User;
+import adapter.CategoryAdapter;
+import adapter.FoodAdapter;
+import database.DbHelper;
+import model.Category;
+import model.Food;
+import model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     private static CardView soupImage;
 
     private static List <Food> fullFoodList = new ArrayList<>();
+
+    private DbHelper dbHelper;
 
     private TextView city_name;
     private String[] city ={"Москва", "Санкт-Петербург", "Владивосток", "Екатеринбург", "Обнинск", "Краснодар", "Красноярск",
@@ -122,80 +129,76 @@ public class MainActivity extends AppCompatActivity {
         drinkImage = findViewById(R.id.drinkImage);
         soupImage = findViewById(R.id.soupImage);
 
+        List<Food> hotFood = new ArrayList<>();
+        List<Food> pasta = new ArrayList<>();
+        List <Food> pizza = new ArrayList<>();
+        List <Food> salad = new ArrayList<>();
+        List <Food> drink = new ArrayList<>();
+        List <Food> soup = new ArrayList<>();
+
+        dbHelper = new DbHelper(this);
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        Cursor cursor1 = database.rawQuery("SELECT * FROM food", null);
+        cursor1.moveToFirst();
+        while (!cursor1.isAfterLast()) {
+            int id = cursor1.getColumnIndex("_id");
+            int category = cursor1.getColumnIndex("category");
+            int cost = cursor1.getColumnIndex("cost");
+            int image = cursor1.getColumnIndex("image");
+            int title = cursor1.getColumnIndex("title");
+            int description = cursor1.getColumnIndex("description");
+            Food food = new Food(cursor1.getInt(id),
+                    cursor1.getInt(cost),
+                    cursor1.getInt(category),
+                    cursor1.getString(image),
+                    cursor1.getString(title),
+                    cursor1.getString(description));
+            cursor1.moveToNext();
+            fullFoodList.add(food);
+        }
+        cursor1.close();
+
         List<Category> categoryList = new ArrayList<>();
-        /*categoryList.add(new Category(0, ""));*/
-        categoryList.add(new Category(1, "Горячие блюда"));
-        categoryList.add(new Category(2, "Паста"));
-        categoryList.add(new Category(3, "Пицца"));
-        categoryList.add(new Category(4, "Салаты и закуски"));
-        categoryList.add(new Category(5, "Напитки"));
-        categoryList.add(new Category(6, "Супы и хлеб"));
+
+        Cursor cursor2 = database.rawQuery("SELECT * FROM category", null);
+        cursor2.moveToFirst();
+        while (!cursor2.isAfterLast()) {
+            Category category = new Category(
+                    cursor2.getInt(0),
+                    cursor2.getString(1)
+            );
+            cursor2.moveToNext();
+            categoryList.add(category);
+        }
+        cursor2.close();
+        dbHelper.close();
+
         setCategoryList(categoryList);
 
-        List<Food> hotFood = new ArrayList<>();
-        hotFood.add(new Food(1, 675, 1, "hotfood1", "Скалопини из курицы", "Нежное куриное филе в сливочно-грибном соусе подается с обжаренными дольками картофеля."));
-        hotFood.add(new Food(2, 675, 1, "hotfood2", "Миланезе де Полло", "Большая котлета из рубленой куриной грудки в панировке запекается с томатным соусом под сыром моцарелла и подается с картофельными дольками, карамелизированной морковью."));
-        hotFood.add(new Food(3, 675, 1, "hotfood3", "Медальоны аль базилико", "Медальоны из свинины в сливочном соусе с песто. Подаём с картофельным пюре и томатами черри – очень удачная компания."));
+        for (int i = 0; i < fullFoodList.size(); i++) {
+            switch (fullFoodList.get(i).getCategory()){
+                case 1:
+                    hotFood.add(fullFoodList.get(i));
+                case 2:
+                    pasta.add(fullFoodList.get(i));
+                case 3:
+                    pizza.add(fullFoodList.get(i));
+                case 4:
+                    salad.add(fullFoodList.get(i));
+                case 5:
+                    drink.add(fullFoodList.get(i));
+                case 6:
+                    soup.add(fullFoodList.get(i));
+            }
+        }
+
         setFoodList1(hotFood);
-
-        List<Food> pasta = new ArrayList<>();
-        pasta.add(new Food(4, 699, 2, "pasta1", "Пенне IL Патио в сливочном соусе", "Фирменный сливочный соус с креветками, помидорами и перцем чили."));
-        pasta.add(new Food(5, 585, 2, "pasta2", "Пенне Верде", "Цвет настроения – зелёный. Пенне со шпинатом, цукини, спаржей, брокколи и бобами эдамаме в соусе с песто."));
-        pasta.add(new Food(6, 699, 2, "pasta3", "Пенне IL Патио в томатном соусе", "Наша гордость и любовь – паста с тигровыми креветками, щупальцами кальмара в томатном соусе с вялеными томатами и базиликом."));
-        pasta.add(new Food(7, 599, 2, "pasta4", "Пенне с цыплёнком и песто", "Сливочный соус с добавлением шпината и песто, маринованной куриной грудкой BBQ, помидорами черри и сыром."));
-        pasta.add(new Food(8, 399, 2, "pasta5", "Пенне Арабьята ", "Классическая паста с пикантным томатным соусом, шампиньонами, чесноком и петрушкой. Арабьята в переводе с итальянского означает «сердитый», намек на то, что паста острая."));
-        pasta.add(new Food(9, 599, 2, "pasta6", "Пенне с ветчиной и грибами", "Паста с шампиньонами и ветчиной в сливочном соусе."));
-        pasta.add(new Food(10, 599, 2, "pasta7", "Мясная лазанья", "Паста с соусом болоньезе, запечённая с моцареллой и пармезаном. Сытно, чётко, насыщенно."));
         setFoodList2(pasta);
-
-        List <Food> pizza = new ArrayList<>();
-        pizza.add(new Food(11, 699, 3, "pizza1", "Пиццетта Кватро Формаджи", "Классическая итальянская пиццетта с пятью видами сыра. Buon appetito!"));
-        pizza.add(new Food(12, 699, 3, "pizza2", "IL Патио", "Фирменная пицца с сыром моцарелла, ветчиной, шампиньонами, пикантной колбасой пепперони, беконом,мюнхенскими колбасками и сладким перцем."));
-        pizza.add(new Food(13, 699, 3, "pizza3", "Фрутти ди Маре с моцареллой", "Для особых случаев. Креветки, кольца и щупальца кальмара, фирменный томатный соус, моцарелла, черри и руккола."));
-        pizza.add(new Food(14, 899, 3, "pizza4", "Барбекю", "Пицца с сочным цыпленком и свининой BBQ, беконом, шампиньонами, луком бальзамик, моцареллой."));
-        pizza.add(new Food(15, 699, 3, "pizza5", "Кватро Формаджи", "Классическая итальянская пиццетта с пятью видами сыра. Buon appetito!"));
-        pizza.add(new Food(16, 599, 3, "pizza6", "Мексикана", "Острая пицца с пепперони, соусом болоньез, томатным соусом, перчиком халапеньо и луком, сыром моцарелла, беконом, тушеным луком и петрушкой."));
-        pizza.add(new Food(17, 599, 3, "pizza7", "Примавера", "Настроение: весна (и какая разница, что там за окном). Черри, артишоки, цукини, микс сладкого перца, песто, лук, грибы и томатный соус."));
-        pizza.add(new Food(18, 599, 3, "pizza8", "Ветчина и грибы", "Шампиньоны, моцарелла, фирменный томатный соус, орегано и ветчина. Ничего лишнего, только любимое."));
         setFoodList3(pizza);
-
-        List <Food> salad = new ArrayList<>();
-        salad.add(new Food(19, 699, 4, "salad1", "Салат с ростбифом", "Салат с запечёной говядиной, артишоками, вялеными томатами и листьями салата в пряном соусе с чили. Заслуживает пристального внимания."));
-        salad.add(new Food(20,  695, 4, "salad2", "Цезарь с креветками", "Отборные листья Ромейна и Айсберга, помидоры черри, перепелиные яйца, гренки, под фирменным соусом Цезарь. А еще креветки - настоящий афродизиак. Цезарь бы оценил!"));
-        salad.add(new Food(21, 599, 4, "salad3", "Цезарь с куриной грудкой", "Вкус этого салата знают во всем мире: листья Ромейна и Айсберга, гренки из тосканского хлеба, кусочки сочной куриной грудки, перепелиные яйца, пармезан и пикантный соус. Да здравствует Цезарь!"));
-        salad.add(new Food(22, 585, 4, "salad4", "Зеленый салат с эдамаме и моцареллой", "Заряд витаминов: свежий шпинат, бобы эдамаме, брокколи, кабачки, огурцы и моцарелла под соусом из маракуйи."));
-        salad.add(new Food(23, 579, 4, "salad5", "Греческий салат", "Легенда. Спелые томаты, сладкий перец, огурцы, красный лук, оливки и сыр фета. Заправляется оливковым маслом и бальзамико."));
         setFoodList4(salad);
-
-        List <Food> drink = new ArrayList<>();
-        drink.add(new Food(24, 495, 5, "drink1", "Морковный фреш", "Свежевыжатый морковный сок."));
-        drink.add(new Food(25, 495, 5, "drink2", "Апельсиновый фреш", "Свежевыжатый апельсиновый сок."));
-        drink.add(new Food(26, 365, 5, "drink3", "Кокосовый смузи с Манго", "Нежный смузи на основе спелого манго, банана, кокосового молока и ананасового сока."));
-        drink.add(new Food(27, 365, 5, "drink4", "Смузи Манго и Мята 0,4 л", "Манго, свежая мята, банан и яблочный сок."));
-        drink.add(new Food(28, 259, 5, "drink5", "Лимонад Крем Сода 0,5 л", "Лимонад с нежным сливочным вкусом, который образуется благодаря сочетанию апельсина, лимона, содовой и ванильно-карамельного сиропа."));
-        drink.add(new Food(29, 259, 5, "drink6", "Лимонад Тархун 0,5 л", "Пряный тархун в сочетании с лимонным и яблочным соками и газированной водой."));
-        drink.add(new Food(30, 259, 5, "drink7", "Имбирный лимонад 0,5 л", "Утоляющее жажду сочетание имбиря, лимона и спрайта."));
-        drink.add(new Food(31, 195, 5, "drink8", "Сок Яблочный 200 мл", ""));
-        drink.add(new Food(32, 195, 5, "drink9", "Сок Персиковый 200 мл", ""));
-        drink.add(new Food(33, 195, 5, "drink10", "Сок Апельсиновый 200 мл", ""));
-        drink.add(new Food(34, 195, 5, "drink11", "Сок Томатный 200 мл", ""));
-        drink.add(new Food(35, 195, 5, "drink12", "Сок Вишневый 200 мл ", ""));
         setFoodList5(drink);
-
-        List <Food> soup = new ArrayList<>();
-        soup.add(new Food(36, 195, 6, "soup1", "Суп с чечевицей и овощами", "Классический итальянский суп с красной фасолью и овощами, который мы заправляем соусом песто и щепоткой волшебства по рецепту любимой бабушки шеф-повара. Подходит для вегетарианцев."));
-        soup.add(new Food(37, 595, 6, "soup2", "Домашняя похлебка с морепродуктами", "Наваристый бульон с кальмарами, мидиями, креветками, каперсами и овощами. Все на борт!"));
-        soup.add(new Food(38, 525, 6, "soup3", "Семейный очаг ", "Сытный мясной суп с говядиной, курицей, свининой и овощами. Заботливо согревает и обволакивает."));
-        soup.add(new Food(39, 299, 6, "soup4", "Фокачча", "Лепешка, выпеченная в дровяной печи из нежнейшего теста на основе муки твердых сортов с добавленем чеснока, соуса песто и ароматного сыра."));
-        soup.add(new Food(40, 225, 6, "soup5", "Чесночный хлеб", "Хрустящий багет, запеченный с чесночным маслом и зеленью."));
         setFoodList6(soup);
 
-        fullFoodList.addAll(hotFood);
-        fullFoodList.addAll(pasta);
-        fullFoodList.addAll(pizza);
-        fullFoodList.addAll(salad);
-        fullFoodList.addAll(drink);
-        fullFoodList.addAll(soup);
     }
 
     public void chooseCity(View view){

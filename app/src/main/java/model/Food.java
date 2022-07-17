@@ -1,9 +1,18 @@
-package Models;
+package model;
 
 public class Food {
 
-    private int id, category, cost;
-    private String img, title, description;
+    private int id;
+
+    private int category;
+
+    private int cost;
+
+    private String img;
+
+    private String title;
+
+    private String description;
 
     public Food(int id, int cost, int category, String img, String title, String description) {
         this.id = id;

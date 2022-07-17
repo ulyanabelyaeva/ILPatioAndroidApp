@@ -7,11 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,11 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-import Adapters.CartAdapter;
-import Adapters.FoodAdapter;
-import Models.Food;
-import Models.Order;
-import Models.User;
+import adapter.CartAdapter;
+import model.Food;
+import model.Order;
+import model.User;
 
 public class CartActivity extends AppCompatActivity {
 

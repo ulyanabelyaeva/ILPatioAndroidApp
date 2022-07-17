@@ -1,8 +1,10 @@
-package Models;
+package model;
+
 
 public class Category {
 
     private int id;
+
     private String title;
 
     public Category(int id, String title) {

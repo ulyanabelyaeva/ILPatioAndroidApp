@@ -21,6 +21,6 @@ public class SlashActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 finish();
             }
-        }, 2*1000);
+        }, 1000);
     }
 }
